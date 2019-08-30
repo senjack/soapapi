@@ -1,0 +1,2 @@
+https://wsvincent.com/django-rest-framework-user-authentication-tutorial/
+https://www.django-rest-framework.org/topics/html-and-forms/
