@@ -69,6 +69,6 @@ urlpatterns = [
     path('api/token/refresh/',TokenRefreshView.as_view(), name='token_refresh'),
   
   #soap
-   url(r'^soapuser', include('soapuser.urls')),
+#    url(r'^soapuser', include('soapuser.urls')),
 
 ]
