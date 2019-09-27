@@ -18,6 +18,7 @@ from django.urls import path
 
 
 from django.conf.urls import url, include
+
 from refactory.models import RefactoryUser
 from rest_framework import routers, serializers, viewsets
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
@@ -66,5 +67,8 @@ urlpatterns = [
     # jwt
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/',TokenRefreshView.as_view(), name='token_refresh'),
+  
+  #soap
+   url(r'^soapuser', include('soapuser.urls')),
 
 ]
