@@ -16,10 +16,59 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+
 from django.conf.urls import url, include
+
+from refactory.models import RefactoryUser
+from rest_framework import routers, serializers, viewsets
+from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
+
+
+# Serializers define the API representation.
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = RefactoryUser
+        fields = ['url',  'email', 'password']
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            if attr == 'password':
+                instance.set_password(value)
+            else:
+                setattr(instance, attr, value)
+        instance.save()
+        return instance
+
+# ViewSets define the view behavior.
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = RefactoryUser.objects.all()
+    serializer_class = UserSerializer
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^users/', include('soapuser.urls')),
-    url(r'^', include('soapuser.urls')),
-    ]
+#    url(r'^api-auth/', include('rest_framework.urls'))
+
+    url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    
+
+    # jwt
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/',TokenRefreshView.as_view(), name='token_refresh'),
+  
+  #soap
+   url(r'^soapuser', include('soapuser.urls')),
+
+]
