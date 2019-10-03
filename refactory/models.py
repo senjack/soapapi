@@ -10,12 +10,6 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 
-
-
-
-# Create your models here.
-
-
 class  RefactoryUserManager(BaseUserManager):
     
     """
@@ -50,17 +44,13 @@ class  RefactoryUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
     
-    
-
-
-
 class RefactoryUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     Primary_Contact= models.CharField(max_length=255,blank=True,null=True)
     Secondary_Contact= models.CharField(max_length=255,blank=True,null=True)
-    # date_joined = models.DateTimeField(default=timezone.now)
+    date_joined = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -70,6 +60,87 @@ class RefactoryUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class Administrator(models.Model):
+        User=models.OneToOneField(RefactoryUser,on_delete=models.CASCADE)
+        Admin_id=models.AutoField(primary_key=True)                
+        Admin_Photo= models.CharField(max_length=255,blank=True,null=True)
+        created_at = models.DateTimeField(default=timezone.now)
+        updated_at = models.DateTimeField(default=timezone.now)
+
+        def __str__(self):
+            return self.User.email
+
+        ordering = ('email')
+
+class Staff(models.Model):
+        User=models.OneToOneField(RefactoryUser ,on_delete=models.CASCADE)
+        Admin_id=models.ForeignKey(Administrator,related_name='+', blank=True, on_delete=models.CASCADE,null=True)
+        Staff_id=models.AutoField(primary_key=True)
+        Staff_Photo= models.CharField(max_length=255,blank=True,null=True)
+        created_at = models.DateTimeField(default=timezone.now)
+        updated_at = models.DateTimeField(default=timezone.now)
+        
+        def __str__(self):
+            return self.email
+
+
+class Applicant(models.Model):
+        User=models.OneToOneField(RefactoryUser,on_delete=models.CASCADE)
+        applicant_id=models.AutoField(primary_key=True)
+        Title=models.CharField(max_length=255,blank=True,null=True)
+        applicant_Photo= models.CharField(max_length=255,blank=True,null=True)
+        Gender= models.CharField(max_length=255,blank=True,null=True)
+        DateofBirth=models.DateField(blank=True,null=True)
+        Town_Residential= models.CharField(max_length=255,blank=True,null=True)
+        Country= models.CharField(max_length=255,blank=True,null=True)
+        Nationality= models.CharField(max_length=255,blank=True,null=True)
+        date_joined = models.DateTimeField(default=timezone.now)
+        last_updated_at = models.DateTimeField(default=timezone.now)
+        
+        def __str__(self):
+            return self.email
+
+
+class Role(models.Model):
+    role_id=models.CharField(max_length=20,primary_key=True)
+    role_name=models.CharField(max_length=20)
+    role_description=models.CharField(max_length=20)
+    registration_date=models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.role_name
+
+
+class AdministratorRole(models.Model):
+
+    administrator_id=models.ForeignKey(Administrator,on_delete=models.CASCADE)
+    role_id=models.ForeignKey(Role,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.role_name
+
+
+class PartnerRole(models.Model):
+    # partner_id=models.ForeignKey(Administrator,on_delete=models.CASCADE)
+    role_id=models.ForeignKey(Role,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.role_name
+
+
+
+class StaffRole(models.Model):
+    staff_id=models.ForeignKey(Staff,on_delete=models.CASCADE)  
+    role_id=models.ForeignKey(Role,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.staff_id
+
+
+
+
+
 
     # @property
     # def token(self):
@@ -96,62 +167,3 @@ class RefactoryUser(AbstractBaseUser, PermissionsMixin):
     #     }, settings.SECRET_KEY, algorithm='HS256')
 
     #     return token.decode('utf-8')
-
-
-
-class Administrator(RefactoryUser):
-        User=models.OneToOneField(RefactoryUser,on_delete=models.CASCADE)
-        Admin_id=models.AutoField(primary_key=True)
-        
-                
-        Admin_Photo= models.CharField(max_length=255,blank=True,null=True)
-
-        # created_at = models.DateTimeField(auto_now_add=True)
-        # updated_at = models.DateTimeField(auto_now=True)
-        
-
-        def __str__(self):
-            return self.email
-
-        ordering = ('email')
-
-class Staff(RefactoryUser):
-        User=models.OneToOneField(Administrator,on_delete=models.CASCADE)
-        Staff_id=models.AutoField(primary_key=True)
-        
-        Staff_Photo= models.CharField(max_length=255,blank=True,null=True)
-        Admin_id=models.ForeignKey(Administrator,related_name='+', blank=True, on_delete=models.CASCADE,null=True)
-        
-
-        # created_at = models.DateTimeField(auto_now_add=True)
-        # updated_at = models.DateTimeField(auto_now=True)
-        
-
-        def __str__(self):
-            return self.email
-
-
-class Applicant(RefactoryUser):
-        User=models.OneToOneField(RefactoryUser,on_delete=models.CASCADE)
-        applicant_id=models.AutoField(primary_key=True)
-
-        Title=models.CharField(max_length=255,blank=True,null=True)
-        applicant_Photo= models.CharField(max_length=255,blank=True,null=True)
-        Gender= models.CharField(max_length=255,blank=True,null=True)
-        DateofBirth=models.DateField(blank=True,null=True)
-        Town_Residential= models.CharField(max_length=255,blank=True,null=True)
-        Country= models.CharField(max_length=255,blank=True,null=True)
-        Nationality= models.CharField(max_length=255,blank=True,null=True)
-        # created_at = models.DateTimeField(auto_now_add=True)
-        # updated_at = models.DateTimeField(auto_now=True)
-        
-        
-
-        def __str__(self):
-            return self.email
-
-
-
-
-
-

@@ -18,7 +18,6 @@ from django.urls import path
 
 
 from django.conf.urls import url, include
-
 from refactory.models import RefactoryUser
 from rest_framework import routers, serializers, viewsets
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
@@ -60,15 +59,20 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 #    url(r'^api-auth/', include('rest_framework.urls'))
 
+    url(r'^users/', include(router.urls)),
+   
+   # Default
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    
 
     # jwt
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/',TokenRefreshView.as_view(), name='token_refresh'),
-  
-  #soap
-#    url(r'^soapuser', include('soapuser.urls')),
+    path(r'api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path(r'api/token/refresh/',TokenRefreshView.as_view(), name='token_refresh'),
+
+    # login
+    path(r'rest-auth/', include('rest_auth.urls')),
+
+    path(r'rest-auth/registration/', include('rest_auth.registration.urls')),
+
 
 ]
