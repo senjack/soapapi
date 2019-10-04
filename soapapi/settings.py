@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+<<<<<<< HEAD
     'rest_auth',
     'allauth',
     'allauth.account',
@@ -46,6 +47,14 @@ INSTALLED_APPS = [
     
     'rest_framework.authtoken',
     'refactory',
+=======
+
+    
+    'rest_framework.authtoken',
+    'refactory'
+
+    'soapuser'
+>>>>>>> 7025530b5d356c40a0e2b17105a89ee789da73d6
 ]
 
 MIDDLEWARE = [
