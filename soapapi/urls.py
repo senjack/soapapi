@@ -22,7 +22,6 @@ from refactory.models import RefactoryUser
 from rest_framework import routers, serializers, viewsets
 from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 
-
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
