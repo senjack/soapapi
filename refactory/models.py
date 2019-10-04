@@ -285,6 +285,104 @@ class Panelist(models.Model):
     # def __str__(self):
     #     return self.batch_id.channel_name
 
+class Cohort(models.Model) :
+    cohort_id = models.CharField(max_length=255, primary_key=True)
+    name_name = models.CharField(max_length=255)
+    registration_date = models.DateTimeField(default=timezone.now)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)
+    cohort_number = models.IntegerField(max_length=255)
+    description = models.TextField(max_length=255)
+    running = models.BooleanField(default=True)
+    
+    def __str__(self) :
+        return self.name_name
+
+class Catalyst(models.Model) :
+    catalyst_id = models.CharField(max_length=255, primary_key=True)
+    name_name = models.CharField(max_length=255)
+    registration_date = models.DateTimeField(default=timezone.now)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)
+    catalyst_number = models.IntegerField(max_length=255)
+    description = models.TextField(max_length=255)
+    running = models.BooleanField(default=True)
+
+    def __str__(self) :
+        return self.name_name
+
+class Bootcamp(models.Model) :
+    bootcamp_id = models.CharField(max_length=255, primary_key=True)
+    name_name = models.CharField(max_length=255)
+    registration_date = models.DateTimeField(default=timezone.now)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)
+    bootcamp_number = models.IntegerField(max_length=255)
+    description = models.TextField(max_length=255)
+    running = models.BooleanField(default=True)
+
+    def __str__(self) :
+        return self.name_name
+
+class Contact(models.Model) :
+    # applicant_id = models.ForeignKey(Applicant, on_delete-models.CASCADE)
+    linkedin_link = models.URLField(max_length=255)
+    twitter_link = models.URLField(max_length=255)
+    facebook_link = models.URLField(max_length=255)
+
+    def __str__(self) :
+        return self.applicant_id.email
+class EducationBackground(models.Model) :
+    # applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
+    school = models.CharField(max_length=255)
+    DEGREE_CHOICES = ((u'BSCS', u'Computer Science'),
+    (u'LLB', u'Lawyer'),
+    (u'BSIT', u'Information Technology'),
+    )
+    degree = models.CharField(max_length=4, default='BSCS', choices=DEGREE_CHOICES)
+    Field_of_study = models.CharField(max_length=255)
+    GRADE_CHOICES = ((u'1', u'1'),
+    (u'2', u'2'),
+    (u'3', u'3'),
+    )
+    grade = models.CharField(max_length=255, default='1', choices=GRADE_CHOICES)
+    From = models.DateTimeField(default=timezone.now)
+    to = models.DateTimeField(default=timezone.now)
+    Extra_activity = models.TextField(max_length=255)
+    def __str__(self) :
+        return self.applicant_id.email
+
+class SkillSet(models.Model):
+    skill_id = models.CharField(max_length=255, primary_key=True)
+    skill_name = models.CharField(max_length=255)
+    description = models.TextField(max_length=255)
+    
+    def __str__(self):
+        return self.skill_name
+
+class Honor(models.Model):
+    # applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
+    honor_title = models.CharField(max_length=255)
+    association = models.CharField(max_length=255)
+    Issuer = models.CharField(max_length=255)
+    date_of_honor = models.DateField(default=timezone.now)
+    Description = models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.applicant_id.email
+
+class ApplicationVideo(models.Model):
+    # application_id = models.ForeignKey(Applicant, on_delete=models.CASCADE )
+    videolink = models.URLField(max_length=255)
+
+    def __str__(self):
+        return self.applicant_id.email
+
+class Interview(models.Model):
+    # schedule_id	= models.OneToOneField(InterviewSchedule, on_delete=models.CASCADE)
+    interview_id = models.CharField(max_length=255, primary_key=True)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)	
 
 class InterviewSchedule(models.Model):
     selection_id=models.OneToOneField(InterviewSelection,on_delete=models.CASCADE)
