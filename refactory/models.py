@@ -385,15 +385,15 @@ class Interview(models.Model):
     end_date = models.DateTimeField(default=timezone.now)	
 
 class InterviewSchedule(models.Model):
-    selection_id=models.OneToOneField(InterviewSelection,on_delete=models.CASCADE)
-    batch_id=models.ForeignKey(Batch,on_delete=models.CASCADE)
+    # selection_id=models.OneToOneField(InterviewSelection,on_delete=models.CASCADE)
+    # batch_id=models.ForeignKey(Batch,on_delete=models.CASCADE)
     schedule_id=models.CharField(max_length=255,primary_key=True)
     creation_date=models.DateTimeField(default=timezone.now)
     start_date=models.DateTimeField(default=timezone.now)
     end_date=models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.selection_id.
+        return self.selection_id
 
 class InterviewScore(models.Model):
     interview_id=models.ForeignKey(Interview,on_delete=models.CASCADE)
@@ -407,7 +407,7 @@ class InterviewScore(models.Model):
 
 
 class Admission(models.Model):
-    application_id=models.ForeignKey(Application,on_delete=models.CASCADE)
+    # application_id=models.ForeignKey(Application,on_delete=models.CASCADE)
     admission_id=models.CharField(max_length=255,primary_key=True)
     admission_date=models.DateTimeField(default=timezone.now)
     
