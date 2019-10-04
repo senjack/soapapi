@@ -19,3 +19,6 @@ https://simpleisbetterthancomplex.com/tutorial/2018/12/19/how-to-use-jwt-authent
 https://www.techiediaries.com/django-rest-framework-jwt-tutorial/
 https://blog.joeymasip.com/how-to-build-a-rest-api-with-django-and-jwt-auth/
 https://thinkster.io/tutorials/django-json-api/authentication
+
+
+https://wsvincent.com/django-rest-framework-user-authentication-tutorial/
