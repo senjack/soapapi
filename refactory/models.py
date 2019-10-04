@@ -105,7 +105,7 @@ class Applicant(models.Model):
 class Role(models.Model):
     role_id=models.CharField(max_length=20,primary_key=True)
     role_name=models.CharField(max_length=20)
-    role_description=models.CharField(max_length=20)
+    role_description=models.TextField(max_length=20)
     registration_date=models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -122,6 +122,7 @@ class AdministratorRole(models.Model):
 
 
 class PartnerRole(models.Model):
+    
     # partner_id=models.ForeignKey(Administrator,on_delete=models.CASCADE)
     role_id=models.ForeignKey(Role,on_delete=models.CASCADE)
 
@@ -131,12 +132,189 @@ class PartnerRole(models.Model):
 
 
 class StaffRole(models.Model):
-    staff_id=models.ForeignKey(Staff,on_delete=models.CASCADE)  
+
+    staff_id=models.ForeignKey(Staff,on_delete=models.CASCADE)
+  
     role_id=models.ForeignKey(Role,on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.staff_id
+        return self.role_id.role
 
+
+class Accessibility(models.Model):
+
+    accessibility_id=models.CharField(max_length=20,primary_key=True)
+    accessibility_name=models.CharField(max_length=20)
+    accessibility_description=models.TextField(max_length=255)
+    accessibility_date=models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.accessibility_name
+
+
+class AdministratorAccessibility(models.Model):
+
+    administrator_id=models.ForeignKey(Administrator,on_delete=models.CASCADE)
+    accessibility_id=models.ForeignKey(Accessibility,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.accessibility_id.accessibility_name
+
+
+class PartnerAccessibility(models.Model):
+
+    # partner_id=models.ForeignKey(Partner,on_delete=models.CASCADE)
+    accessibility_id=models.ForeignKey(Accessibility,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.accessibility_id.accessibility_name
+
+
+class StaffAccessibility(models.Model):
+
+    Staff_id=models.ForeignKey(Administrator,on_delete=models.CASCADE)
+    accessibility_id=models.ForeignKey(Accessibility,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.accessibility_id.accessibility_name
+
+
+class ApplicantAccessibility(models.Model):
+
+    applicant_id=models.ForeignKey(Applicant,on_delete=models.CASCADE)
+    accessibility_id=models.ForeignKey(Accessibility,on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return self.accessibility_id.accessibility_name
+
+
+
+class Skill(models.Model):
+
+    applicant_id=models.ForeignKey(Applicant,on_delete=models.CASCADE)
+    # skill_id=models.ForeignKey(SkillSet,on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return self.skill_id.skill_name
+
+
+
+class Project(models.Model):
+
+    applicant_id=models.ForeignKey(Applicant,on_delete=models.CASCADE)
+    project_name=models.CharField(max_length=20)
+    association=models.CharField(max_length=255)
+    project_url=models.URLField()
+    start_date=models.DateField(default=timezone.now)
+    end_date=models.DateTimeField(default=timezone.now)
+    description=models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.project_name
+
+
+class Publication(models.Model):
+    applicant_id=models.ForeignKey(Applicant,on_delete=models.CASCADE)
+    publication_title=models.CharField(max_length=20)
+    publisher=models.CharField(max_length=255)
+    publication_url=models.URLField()
+    publication_date=models.DateField(default=timezone.now)
+    description=models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.publication_title
+
+class Certificate(models.Model):
+    applicant_id=models.ForeignKey(Applicant,on_delete=models.CASCADE)
+    certificate_title=models.CharField(max_length=20)
+    License=models.CharField(max_length=255)
+    certificate_url=models.URLField()
+    certificate_date=models.DateField(default=timezone.now)
+    description=models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.certificate_title
+
+
+class Course(models.Model):
+    applicant_id=models.ForeignKey(Applicant,on_delete=models.CASCADE)
+    course_name=models.CharField(max_length=20)
+    course_id=models.CharField(max_length=255)
+    association=models.CharField(max_length=255)
+    description=models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.course_name
+
+class Referee(models.Model):
+    applicant_id=models.ForeignKey(Applicant,on_delete=models.CASCADE)
+    name=models.CharField(max_length=20)
+    position=models.CharField(max_length=255)
+    organisation=models.CharField(max_length=255)
+    email=models.EmailField(max_length=255)
+    telephone=models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
+
+
+class AdvertisementChannelSet(models.Model):
+    channel_id=models.CharField(max_length=30,primary_key=True)
+    channel_name=models.CharField(max_length=20)
+    position=models.CharField(max_length=255)
+    description=models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.channel_name
+
+class AdvertisementChannel(models.Model):
+    applicant_id=models.ForeignKey(Applicant,on_delete=models.CASCADE)
+    channel_id=models.ForeignKey(AdvertisementChannelSet,on_delete=models.CASCADE)
+    
+
+    def __str__(self):
+        return self.channel_id.channel_name
+
+class Panelist(models.Model):
+    staff_id=models.ForeignKey(Staff,on_delete=models.CASCADE)
+    # batch_id=models.ForeignKey(Batch,on_delete=models.CASCADE)
+    
+
+    # def __str__(self):
+    #     return self.batch_id.channel_name
+
+
+class InterviewSchedule(models.Model):
+    selection_id=models.OneToOneField(InterviewSelection,on_delete=models.CASCADE)
+    batch_id=models.ForeignKey(Batch,on_delete=models.CASCADE)
+    schedule_id=models.CharField(max_length=255,primary_key=True)
+    creation_date=models.DateTimeField(default=timezone.now)
+    start_date=models.DateTimeField(default=timezone.now)
+    end_date=models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.selection_id.
+
+class InterviewScore(models.Model):
+    interview_id=models.ForeignKey(Interview,on_delete=models.CASCADE)
+    staff_id=models.ForeignKey(Staff,on_delete=models.CASCADE)
+    indicator_id=models.CharField(max_length=255,primary_key=True)
+    score=models.IntegerField()
+    comment=models.TextField(max_length=255)
+    
+    def __str__(self):
+        return self.interview_id
+
+
+class Admission(models.Model):
+    application_id=models.ForeignKey(Application,on_delete=models.CASCADE)
+    admission_id=models.CharField(max_length=255,primary_key=True)
+    admission_date=models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return self.application_id
 
 
 

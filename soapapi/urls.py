@@ -75,4 +75,10 @@ urlpatterns = [
     path(r'rest-auth/registration/', include('rest_auth.registration.urls')),
 
 
+    # login
+    path('rest-auth/', include('rest_auth.urls')),
+
+    path('rest-auth/registration/', include('rest_auth.registration.urls')),
+
+
 ]
