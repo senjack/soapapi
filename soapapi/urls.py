@@ -59,12 +59,19 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 #    url(r'^api-auth/', include('rest_framework.urls'))
 
-    url(r'^', include(router.urls)),
+    url(r'^users/', include(router.urls)),
+   
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     
 
     # jwt
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/',TokenRefreshView.as_view(), name='token_refresh'),
+
+    # login
+    path('rest-auth/', include('rest_auth.urls')),
+
+    path('rest-auth/registration/', include('rest_auth.registration.urls')),
+
 
 ]

@@ -151,6 +151,45 @@ class Applicant(RefactoryUser):
             return self.email
 
 
+class Role(models.Model):
+
+    role_id=models.CharField(max_length=20,primary_key=True)
+    role_name=models.CharField(max_length=20)
+    role_description=models.CharField(max_length=20)
+    registration_date=models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.role_name
+
+
+class AdministratorRole(models.Model):
+
+    administrator_id=models.ForeignKey(Administrator,on_delete=models.CASCADE)
+    role_id=models.ForeignKey(Role,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.role_name
+
+
+class PartnerRole(models.Model):
+    
+    # partner_id=models.ForeignKey(Administrator,on_delete=models.CASCADE)
+    role_id=models.ForeignKey(Role,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.role_name
+
+
+
+class StaffRole(models.Model):
+
+    staff_id=models.ForeignKey(Staff,on_delete=models.CASCADE)
+  
+    role_id=models.ForeignKey(Role,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.staff_id
+
 
 
 
