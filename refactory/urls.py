@@ -31,5 +31,13 @@ router8 = routers.DefaultRouter()
 router8.register(r'Interview', views.InterviewViewSet)
 urlpatterns = [
     
-    
+    url(r'^cohort/', include(router.urls)),
+    url(r'^catalyst/', include(router1.urls)),
+    url(r'^contact/', include(router2.urls)),
+    url(r'^cohort/', include(router3.urls)),
+    url(r'^EducationBackground/', include(router4.urls)),
+    url(r'^SkillSet/', include(router5.urls)),
+    url(r'^honor/', include(router6.urls)),
+    url(r'^ApplicationVideo/', include(router7.urls)),
+    url(r'^Interview/', include(router8.urls)),
 ]
