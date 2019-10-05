@@ -10,6 +10,8 @@ from .models import SkillSet
 from .models import Honor
 from .models import ApplicationVideo
 from .models import Interview
+from .models import Role
+from .models import AdministratorRole
 
 # Register your models here.
 
@@ -31,4 +33,5 @@ admin.site.register(SkillSet)
 admin.site.register(Honor)
 admin.site.register(ApplicationVideo)
 admin.site.register(Interview)
-
+admin.site.register(Role)
+admin.site.register(AdministratorRole)
