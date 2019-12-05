@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_auth',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'rest_auth.registration',
     'django.contrib.sites',
     
@@ -95,10 +96,6 @@ SITE_ID = 1
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
-
-
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -142,10 +139,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+#added for JWT suport
+REST_USE_JWT = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = "refactory.RefactoryUser"
@@ -158,16 +156,13 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
      'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
 
 
-
     'DEFAULT_PERMISSION_CLASSES': [
          'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-         
-        
         # 'rest_framework.permissions.AllowAny',
     ]
 }

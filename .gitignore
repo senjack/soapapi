@@ -1,9 +1,13 @@
-secrate_code.txt
-__VC__.txt
 # Created by https://www.gitignore.io/api/linux,macos,python,django,windows,pycharm,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=linux,macos,python,django,windows,pycharm,visualstudiocode
 
 ### Django ###
+secrate_code.txt
+__VC__.txt
+refactory/migrations/
+soapuser/
+
+#########################################
 *.log
 *.pot
 *.pyc

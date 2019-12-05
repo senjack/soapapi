@@ -6,7 +6,7 @@ from django.conf.urls import url, include
 
 
 router = routers.DefaultRouter()
-router.register(r'cohort', views.CohortViewSet)
+router.register(r'^', views.CohortViewSet)
 
 router1 = routers.DefaultRouter()
 router1.register(r'catalyst', views.CatalystViewSet)

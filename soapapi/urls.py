@@ -26,7 +26,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RefactoryUser
-        fields = ['url',  'email', 'password']
+        fields = ['id','url',  'email','first_name','last_name','username','title','gender','primary_Contact','secondary_Contact','is_staff','is_active','date_joined'] #, 'password'
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -57,8 +57,6 @@ router.register(r'users', UserViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
 #    url(r'^api-auth/', include('rest_framework.urls'))
-
-    url(r'^users/', include(router.urls)),
    
    # Default
     url(r'^', include(router.urls)),

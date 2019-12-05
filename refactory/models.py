@@ -46,10 +46,18 @@ class  RefactoryUserManager(BaseUserManager):
     
 class RefactoryUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
+    first_name= models.CharField(max_length=255,blank=True,null=True)
+    last_name= models.CharField(max_length=255,blank=True,null=True)
+    username= models.CharField(max_length=255,blank=True,null=True)
+    title= models.CharField(max_length=255,blank=True,null=True)
+    gender= models.CharField(max_length=255,blank=True,null=True)
+    primary_Contact= models.CharField(max_length=255,blank=True,null=True)
+    secondary_Contact= models.CharField(max_length=255,blank=True,null=True)
+    # user_photo= models.CharField(max_length=255,blank=True,null=True)
+
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    Primary_Contact= models.CharField(max_length=255,blank=True,null=True)
-    Secondary_Contact= models.CharField(max_length=255,blank=True,null=True)
+
     date_joined = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = 'email'
@@ -62,44 +70,44 @@ class RefactoryUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 class Administrator(models.Model):
-        User=models.OneToOneField(RefactoryUser,on_delete=models.CASCADE)
-        Admin_id=models.AutoField(primary_key=True)                
-        Admin_Photo= models.CharField(max_length=255,blank=True,null=True)
+        user=models.OneToOneField(RefactoryUser,on_delete=models.CASCADE)
+        admin_id=models.AutoField(primary_key=True)                
+        admin_Photo= models.CharField(max_length=255,blank=True,null=True)
         created_at = models.DateTimeField(default=timezone.now)
         updated_at = models.DateTimeField(default=timezone.now)
 
         def __str__(self):
-            return self.User.email
+            return self.user.email
 
         ordering = ('email')
 
 class Staff(models.Model):
-        User=models.OneToOneField(RefactoryUser ,on_delete=models.CASCADE)
-        Admin_id=models.ForeignKey(Administrator,related_name='+', blank=True, on_delete=models.CASCADE,null=True)
-        Staff_id=models.AutoField(primary_key=True)
-        Staff_Photo= models.CharField(max_length=255,blank=True,null=True)
+        user=models.OneToOneField(RefactoryUser ,on_delete=models.CASCADE)
+        admin_id=models.ForeignKey(Administrator,related_name='+', blank=True, on_delete=models.CASCADE,null=True)
+        staff_id=models.AutoField(primary_key=True)
+        staff_Photo= models.CharField(max_length=255,blank=True,null=True)
         created_at = models.DateTimeField(default=timezone.now)
         updated_at = models.DateTimeField(default=timezone.now)
         
         def __str__(self):
-            return self.email
+            return self.user.email
 
 
 class Applicant(models.Model):
-        User=models.OneToOneField(RefactoryUser,on_delete=models.CASCADE)
+        user=models.OneToOneField(RefactoryUser,on_delete=models.CASCADE)
         applicant_id=models.AutoField(primary_key=True)
-        Title=models.CharField(max_length=255,blank=True,null=True)
+        title=models.CharField(max_length=255,blank=True,null=True)
         applicant_Photo= models.CharField(max_length=255,blank=True,null=True)
-        Gender= models.CharField(max_length=255,blank=True,null=True)
-        DateofBirth=models.DateField(blank=True,null=True)
-        Town_Residential= models.CharField(max_length=255,blank=True,null=True)
-        Country= models.CharField(max_length=255,blank=True,null=True)
-        Nationality= models.CharField(max_length=255,blank=True,null=True)
+        gender= models.CharField(max_length=255,blank=True,null=True)
+        dateofBirth=models.DateField(blank=True,null=True)
+        town_Residential= models.CharField(max_length=255,blank=True,null=True)
+        country= models.CharField(max_length=255,blank=True,null=True)
+        nationality= models.CharField(max_length=255,blank=True,null=True)
         date_joined = models.DateTimeField(default=timezone.now)
         last_updated_at = models.DateTimeField(default=timezone.now)
         
         def __str__(self):
-            return self.email
+            return self.user.email
 
 
 class Role(models.Model):
@@ -194,7 +202,7 @@ class Cohort(models.Model) :
     registration_date = models.DateTimeField(default=timezone.now)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
-    cohort_number = models.IntegerField(max_length=255)
+    cohort_number = models.IntegerField()
     description = models.TextField(max_length=255)
     running = models.BooleanField(default=True)
     
@@ -214,7 +222,7 @@ class Catalyst(models.Model) :
     registration_date = models.DateTimeField(default=timezone.now)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
-    catalyst_number = models.IntegerField(max_length=255)
+    catalyst_number = models.IntegerField()
     description = models.TextField(max_length=255)
     running = models.BooleanField(default=True)
 
@@ -227,7 +235,7 @@ class Bootcamp(models.Model) :
     registration_date = models.DateTimeField(default=timezone.now)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
-    bootcamp_number = models.IntegerField(max_length=255)
+    bootcamp_number = models.IntegerField()
     description = models.TextField(max_length=255)
     running = models.BooleanField(default=True)
 
@@ -335,7 +343,7 @@ class Honor(models.Model):
     association = models.CharField(max_length=255)
     Issuer = models.CharField(max_length=255)
     date_of_honor = models.DateField(default=timezone.now)
-    Description = models.TextField(max_length=255)
+    description = models.TextField(max_length=255)
 
     def __str__(self):
         return self.applicant_id.email
