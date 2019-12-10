@@ -52,6 +52,3 @@ class InterviewSerializer (serializers.HyperlinkedModelSerializer):
     class Meta: Interview
     fields = ('schedule_id', 'interview_id', 'start_date', 'end_date')
 
-    
-
-    

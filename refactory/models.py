@@ -70,6 +70,7 @@ class RefactoryUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 class Administrator(models.Model):
+        # administrator_id = models.CharField("RFCT/ADM/001",primary_key=True)
         user=models.OneToOneField(RefactoryUser,on_delete=models.CASCADE)
         admin_id=models.AutoField(primary_key=True)                
         admin_Photo= models.CharField(max_length=255,blank=True,null=True)
