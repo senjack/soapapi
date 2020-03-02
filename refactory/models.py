@@ -221,7 +221,7 @@ class Catalyst(models.Model) :
     catalyst_id = models.CharField(max_length=255, primary_key=True)
     catalyst_name = models.CharField(max_length=255)
     registration_date = models.DateTimeField(default=timezone.now)
-    start_date = models.DateTimeField(default=timezone.now)
+        start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
     catalyst_number = models.IntegerField()
     description = models.TextField(max_length=255)
