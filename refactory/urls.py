@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from refactory import views
 from rest_framework import routers
@@ -33,7 +33,7 @@ router8 = routers.DefaultRouter()
 router8.register(r'Interview', views.InterviewViewSet)
 
 urlpatterns = [
-    
+
     url(r'^cohort/', include(router.urls)),
     url(r'^catalyst/', include(router1.urls)),
     url(r'^contact/', include(router2.urls)),

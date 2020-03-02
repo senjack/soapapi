@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',  
+    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -138,7 +138,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-#added for JWT suport
+# added for JWT suport
 REST_USE_JWT = True
 
 # Static files (CSS, JavaScript, Images)
@@ -150,18 +150,18 @@ AUTH_USER_MODEL = "refactory.RefactoryUser"
 # LOGIN_REDIRECT_URL = '/'
 
 
-#Rest-frameworks
+# Rest-frameworks
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-     'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
 
 
     'DEFAULT_PERMISSION_CLASSES': [
-         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         # 'rest_framework.permissions.AllowAny',
     ]
 }
