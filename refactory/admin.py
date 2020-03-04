@@ -12,8 +12,8 @@ from .models import ApplicationVideo
 from .models import Interview
 from .models import Role
 from .models import AdministratorRole
-from .models import InterviewCategory
+from .models import InterviewCategory, StructureIndicator
 
 refactory_models_list = [InterviewCategory,
-                         RefactoryUser, Administrator, Staff, Applicant, Cohort, Catalyst, Bootcamp, Contact, EducationBackground, SkillSet, Honor, ApplicationVideo, Interview, Role, AdministratorRole]
+                         RefactoryUser, Administrator, Staff, Applicant, Cohort, Catalyst, Bootcamp, Contact, EducationBackground, SkillSet, Honor, ApplicationVideo, Interview, Role, AdministratorRole, StructureIndicator]
 admin.site.register(refactory_models_list)
