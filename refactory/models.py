@@ -74,7 +74,7 @@ class Administrator(models.Model):
     administrator_id = models.CharField(
         max_length=254, default="RFCT/ADM/<number>", primary_key=True)
     user = models.OneToOneField(RefactoryUser, on_delete=models.CASCADE)
-    admin_id = models.IntegerField(default=1)
+    id = models.IntegerField(default=1)
     admin_Photo = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
@@ -83,12 +83,12 @@ class Administrator(models.Model):
 
         if self._state.adding:
             last_id = Administrator.objects.all().aggregate(
-                largest=models.Max('admin_id'))['largest']
+                largest=models.Max('id'))['largest']
             if last_id is None:
-                self.admin_id = 1
+                self.id = 1
             else:
-                self.admin_id = last_id + 1
-            self.administrator_id = "RFCT/ADM/" + '{:03}'.format(self.admin_id)
+                self.id = last_id + 1
+            self.administrator_id = "RFCT/ADM/" + '{:03}'.format(self.id)
             super(Administrator, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -99,12 +99,25 @@ class Administrator(models.Model):
 
 class Staff(models.Model):
     user = models.OneToOneField(RefactoryUser, on_delete=models.CASCADE)
-    admin_id = models.ForeignKey(
+    id = models.ForeignKey(
         Administrator, related_name='+', blank=True, on_delete=models.CASCADE, null=True)
-    staff_id = models.AutoField(primary_key=True)
+    staff_id = models.CharField(
+        max_length=254, default="RFCT/SOAP/ADM/<number>", primary_key=True)
+    id = models.IntegerField(default=1)
     staff_Photo = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        if self._state.adding:
+            last_id = Staff.objects.all().aggregate(
+                largest=models.Max('id'))['largest']
+            if last_id is None:
+                self.id = 1
+            else:
+                self.id = last_id + 1
+            self.staff_id = "RFCT/SOAP/STF/" + '{:03}'.format(self.id)
+            super(Staff, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.user.email
@@ -112,7 +125,8 @@ class Staff(models.Model):
 
 class Applicant(models.Model):
     user = models.OneToOneField(RefactoryUser, on_delete=models.CASCADE)
-    applicant_id = models.AutoField(primary_key=True)
+    applicant_id = models.CharField(max_length=254, primary_key=True)
+    id = models.IntegerField(default=1)
     title = models.CharField(max_length=255, blank=True, null=True)
     applicant_Photo = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(max_length=255, blank=True, null=True)
@@ -122,6 +136,18 @@ class Applicant(models.Model):
     nationality = models.CharField(max_length=255, blank=True, null=True)
     date_joined = models.DateTimeField(default=timezone.now)
     last_updated_at = models.DateTimeField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+
+        if self._state.adding:
+            last_id = Applicant.objects.all().aggregate(
+                largest=models.Max('id'))['largest']
+            if last_id is None:
+                self.id = 1
+            else:
+                self.id = last_id + 1
+            self.applicant_id = "RFCT/SOAP/APT/" + '{:04}'.format(self.id)
+            super(Applicant, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.user.email
@@ -424,51 +450,33 @@ class Application(models.Model):
     admitted = models.BooleanField()
 
 
+class Competence(models.Model):
+    application_id = models.ForeignKey(Application, on_delete=models.CASCADE)
+    report_link = models.URLField
+
+
 class ApplicationVideo(models.Model):
-    # application_id = models.ForeignKey(Applicant, on_delete=models.CASCADE )
+    application_id = models.ForeignKey(Application, on_delete=models.CASCADE)
     videolink = models.URLField(max_length=255)
 
     def __str__(self):
-        return self.applicant_id.email
+        return self.application_id.applicant_id
 
 
-class Panelist(models.Model):
-    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    batch_id = models.ForeignKey(Batch, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.batch_id.channel_name
-
-
-class InterviewSchedule(models.Model):
-    selection_id = models.OneToOneField(
-        InterviewSelection, on_delete=models.CASCADE)
-    batch_id = models.ForeignKey(Batch, on_delete=models.CASCADE)
-    schedule_id = models.CharField(max_length=255, primary_key=True)
-    creation_date = models.DateTimeField(default=timezone.now)
-    start_date = models.DateTimeField(default=timezone.now)
-    end_date = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return self.selection_id
+class Room(models.Model):
+    room_id = models.CharField(primary_key=True, max_length=254)
+    room_name = models.CharField(max_length=254)
+    block_level = models.CharField(max_length=254)
+    description = models.TextField()
 
 
-class Interview(models.Model):
-    # schedule_id	= models.OneToOneField(InterviewSchedule, on_delete=models.CASCADE)
-    interview_id = models.CharField(max_length=255, primary_key=True)
-    start_date = models.DateTimeField(default=timezone.now)
-    end_date = models.DateTimeField(default=timezone.now)
-
-
-class InterviewScore(models.Model):
-    interview_id = models.ForeignKey(Interview, on_delete=models.CASCADE)
-    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    indicator_id = models.CharField(max_length=255, primary_key=True)
-    score = models.IntegerField()
-    comment = models.TextField(max_length=255)
-
-    def __str__(self):
-        return self.interview_id
+class Batch(models.Model):
+    room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
+    batch_id = models.CharField(primary_key=True, max_length=254)
+    batch_name = models.CharField(max_length=254)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    date_of_last_update = models.DateTimeField(auto_now=True)
+    description = models.TextField()
 
 
 class InterviewCategory(models.Model):
@@ -495,13 +503,44 @@ class InterviewSet(models.Model):
 
 
 class InterviewSelection(models.Model):
-    # application_id = models.ForeignKey()  # Needs discussion
+    application_id = models.ForeignKey(Application, on_delete=models.CASCADE)
     set_id = models.ForeignKey(InterviewSet, on_delete=models.CASCADE)
     selection_id = models.CharField(max_length=254, primary_key=True)
     selection_date = models.DateTimeField()
 
     def __str__(self):
         return self.set_id.set_name
+
+
+class InterviewSchedule(models.Model):
+    selection_id = models.OneToOneField(
+        InterviewSelection, on_delete=models.CASCADE)
+    batch_id = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    schedule_id = models.CharField(max_length=255, primary_key=True)
+    creation_date = models.DateTimeField(default=timezone.now)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.selection_id
+
+
+class Interview(models.Model):
+    schedule_id	= models.OneToOneField(InterviewSchedule, on_delete=models.CASCADE)
+    interview_id = models.CharField(max_length=255, primary_key=True)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(default=timezone.now)
+
+
+class InterviewScore(models.Model):
+    interview_id = models.ForeignKey(Interview, on_delete=models.CASCADE)
+    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    indicator_id = models.CharField(max_length=255, primary_key=True)
+    score = models.IntegerField()
+    comment = models.TextField(max_length=255)
+
+    def __str__(self):
+        return self.interview_id
 
 
 class CategoryStructure(models.Model):
@@ -526,20 +565,12 @@ class StructureIndicator(models.Model):
         return self.indicator_name
 
 
-class Room(models.Model):
-    room_id = models.CharField(primary_key=True, max_length=254)
-    room_name = models.CharField(max_length=254)
-    block_level = models.CharField(max_length=254)
-    description = models.TextField()
+class Panelist(models.Model):
+    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    batch_id = models.ForeignKey(Batch, on_delete=models.CASCADE)
 
-
-class Batch(models.Model):
-    room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
-    batch_id = models.CharField(primary_key=True, max_length=254)
-    batch_name = models.CharField(max_length=254)
-    creation_date = models.DateTimeField(auto_now_add=True)
-    date_of_last_update = models.DateTimeField(auto_now=True)
-    description = models.TextField()
+    def __str__(self):
+        return self.batch_id.channel_name
 
 
 class Partner(models.Model):
@@ -556,7 +587,7 @@ class Partner(models.Model):
 
 
 class Admission(models.Model):
-    # application_id=models.ForeignKey(Application,on_delete=models.CASCADE)
+    application_id = models.ForeignKey(Application, on_delete=models.CASCADE)
     admission_id = models.CharField(max_length=255, primary_key=True)
     admission_date = models.DateTimeField(default=timezone.now)
 
