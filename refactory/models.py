@@ -453,6 +453,17 @@ class InterviewCategory(models.Model):
         return self.category_name
 
 
+class InterviewSet(models.Model):
+    category_id = models.ForeignKey(
+        InterviewCategory, on_delete=models.CASCADE)
+    set_id = models.CharField(primary_key=True, max_length=254)
+    set_name = models.CharField(max_length=254)
+    description = models.TextField()
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    running = models.BooleanField()
+
+
 class CategoryStructure(models.Model):
     category_id = models.ForeignKey(
         InterviewCategory, on_delete=models.CASCADE)
