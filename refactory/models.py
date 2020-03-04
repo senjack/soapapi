@@ -453,16 +453,26 @@ class InterviewCategory(models.Model):
         return self.category_name
 
 
+class CategoryStructure(models.Model):
+    category_id = models.ForeignKey(
+        InterviewCategory, on_delete=models.CASCADE)
+    structure_id = models.CharField(primary_key=True, max_length=254)
+    structure_name = models.CharField(max_length=254)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.structure_name
+
+
 class StructureIndicator(models.Model):
-    indicator_id = models.CharField(max_length=254)
-    structure_id = models.CharField(max_length=254)
+    indicator_id = models.CharField(max_length=254, primary_key=True)
+    structure_id = models.ForeignKey(
+        CategoryStructure, on_delete=models.CASCADE)
     indicator_name = models.CharField(max_length=254)
     description = models.TextField()
 
     def __str__(self):
         return self.indicator_name
-
-
 
 
 class Admission(models.Model):
