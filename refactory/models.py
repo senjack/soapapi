@@ -444,6 +444,15 @@ class InterviewScore(models.Model):
         return self.interview_id
 
 
+class InterviewCategory(models.Model):
+    category_id = models.CharField(max_length=254, primary_key=True)
+    category_name = models.CharField(max_length=254)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.category_name
+
+
 class Admission(models.Model):
     # application_id=models.ForeignKey(Application,on_delete=models.CASCADE)
     admission_id = models.CharField(max_length=255, primary_key=True)

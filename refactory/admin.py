@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Administrator,Staff,Applicant,RefactoryUser
+from .models import Administrator, Staff, Applicant, RefactoryUser
 from .models import Cohort
 from .models import Catalyst
 from .models import Bootcamp
@@ -12,8 +12,11 @@ from .models import ApplicationVideo
 from .models import Interview
 from .models import Role
 from .models import AdministratorRole
-
+from .models import InterviewCategory
 # Register your models here.
+
+refactoryModels = [InterviewCategory]
+admin.site.register(refactoryModels)
 
 admin.site.register(RefactoryUser)
 
@@ -24,7 +27,7 @@ admin.site.register(Staff)
 admin.site.register(Applicant)
 
 
-admin.site.register(Cohort) 
+admin.site.register(Cohort)
 admin.site.register(Catalyst)
 admin.site.register(Bootcamp)
 admin.site.register(Contact)
