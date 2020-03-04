@@ -71,12 +71,25 @@ class RefactoryUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Administrator(models.Model):
-    # administrator_id = models.CharField("RFCT/ADM/001",primary_key=True)
+    administrator_id = models.CharField(
+        max_length=254, default="RFCT/ADM/<number>", primary_key=True)
     user = models.OneToOneField(RefactoryUser, on_delete=models.CASCADE)
-    admin_id = models.AutoField(primary_key=True)
+    admin_id = models.IntegerField(default=1)
     admin_Photo = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+
+        if self._state.adding:
+            last_id = Administrator.objects.all().aggregate(
+                largest=models.Max('admin_id'))['largest']
+            if last_id is None:
+                self.admin_id = 1
+            else:
+                self.admin_id = last_id + 1
+            self.administrator_id = "RFCT/ADM/" + '{:03}'.format(self.admin_id)
+            super(Administrator, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.user.email
@@ -463,12 +476,18 @@ class InterviewSet(models.Model):
     end_date = models.DateTimeField()
     running = models.BooleanField()
 
+    def __str__(self):
+        return self.set_name
+
 
 class InterviewSelection(models.Model):
     # application_id = models.ForeignKey()  # Needs discussion
     set_id = models.ForeignKey(InterviewSet, on_delete=models.CASCADE)
     selection_id = models.CharField(max_length=254, primary_key=True)
     selection_date = models.DateTimeField()
+
+    def __str__(self):
+        return self.set_id.set_name
 
 
 class CategoryStructure(models.Model):
@@ -498,6 +517,28 @@ class Room(models.Model):
     room_name = models.CharField(max_length=254)
     block_level = models.CharField(max_length=254)
     description = models.TextField()
+
+
+class Batch(models.Model):
+    room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
+    batch_id = models.CharField(primary_key=True, max_length=254)
+    batch_name = models.CharField(max_length=254)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    date_of_last_update = models.DateTimeField(auto_now=True)
+    description = models.TextField()
+
+
+class Partner(models.Model):
+    administrator_id = models.ForeignKey(
+        Administrator, on_delete=models.CASCADE)  # Needs Discussion
+    partner_id = models.CharField(max_length=254, primary_key=True)
+    partner_name = models.CharField(max_length=254)
+    partner_logo = models.ImageField()
+    partner_cover_photo = models.ImageField()
+    partner_description = models.TextField()
+    partner_types = [("Industrial Partner", "Industrial"),
+                     ("Project", "Project")]
+    partnership_type = models.CharField(max_length=254, choices=partner_types)
 
 
 class Admission(models.Model):
