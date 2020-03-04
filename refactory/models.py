@@ -411,6 +411,19 @@ class AdvertisementChannel(models.Model):
         return self.channel_id.channel_name
 
 
+class Application(models.Model):
+    applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
+    catalyst_id = models.ForeignKey(Catalyst, on_delete=models.CASCADE)
+    bootcamp_id = models.ForeignKey(Bootcamp, on_delete=models.CASCADE)
+    application_id = models.CharField(primary_key=True, max_length=254)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    completed = models.BooleanField()
+    selected = models.BooleanField()
+    interviewed = models.BooleanField()
+    admitted = models.BooleanField()
+
+
 class ApplicationVideo(models.Model):
     # application_id = models.ForeignKey(Applicant, on_delete=models.CASCADE )
     videolink = models.URLField(max_length=255)
@@ -421,15 +434,16 @@ class ApplicationVideo(models.Model):
 
 class Panelist(models.Model):
     staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    # batch_id=models.ForeignKey(Batch,on_delete=models.CASCADE)
+    batch_id = models.ForeignKey(Batch, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return self.batch_id.channel_name
+    def __str__(self):
+        return self.batch_id.channel_name
 
 
 class InterviewSchedule(models.Model):
-    # selection_id=models.OneToOneField(InterviewSelection,on_delete=models.CASCADE)
-    # batch_id=models.ForeignKey(Batch,on_delete=models.CASCADE)
+    selection_id = models.OneToOneField(
+        InterviewSelection, on_delete=models.CASCADE)
+    batch_id = models.ForeignKey(Batch, on_delete=models.CASCADE)
     schedule_id = models.CharField(max_length=255, primary_key=True)
     creation_date = models.DateTimeField(default=timezone.now)
     start_date = models.DateTimeField(default=timezone.now)
