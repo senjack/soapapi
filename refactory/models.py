@@ -467,8 +467,9 @@ class InterviewSet(models.Model):
 class InterviewSelection(models.Model):
     # application_id = models.ForeignKey()  # Needs discussion
     set_id = models.ForeignKey(InterviewSet, on_delete=models.CASCADE)
-    selection_id = models.CharField(max_length=254,primary_key=True)
-    selection_date=models.DateTimeField()
+    selection_id = models.CharField(max_length=254, primary_key=True)
+    selection_date = models.DateTimeField()
+
 
 class CategoryStructure(models.Model):
     category_id = models.ForeignKey(
@@ -490,6 +491,13 @@ class StructureIndicator(models.Model):
 
     def __str__(self):
         return self.indicator_name
+
+
+class Room(models.Model):
+    room_id = models.CharField(primary_key=True, max_length=254)
+    room_name = models.CharField(max_length=254)
+    block_level = models.CharField(max_length=254)
+    description = models.TextField()
 
 
 class Admission(models.Model):
