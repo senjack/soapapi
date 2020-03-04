@@ -464,6 +464,12 @@ class InterviewSet(models.Model):
     running = models.BooleanField()
 
 
+class InterviewSelection(models.Model):
+    # application_id = models.ForeignKey()  # Needs discussion
+    set_id = models.ForeignKey(InterviewSet, on_delete=models.CASCADE)
+    selection_id = models.CharField(max_length=254,primary_key=True)
+    selection_date=models.DateTimeField()
+
 class CategoryStructure(models.Model):
     category_id = models.ForeignKey(
         InterviewCategory, on_delete=models.CASCADE)
