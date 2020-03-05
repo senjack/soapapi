@@ -383,29 +383,6 @@ class Certificate(models.Model):
         return self.certificate_title
 
 
-class Course(models.Model):
-    applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
-    course_name = models.CharField(max_length=20)
-    course_id = models.CharField(max_length=255)
-    association = models.CharField(max_length=255)
-    description = models.TextField(max_length=255)
-
-    def __str__(self):
-        return self.course_name
-
-
-class Honor(models.Model):
-    applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
-    honor_title = models.CharField(max_length=255)
-    association = models.CharField(max_length=255)
-    Issuer = models.CharField(max_length=255)
-    date_of_honor = models.DateField(default=timezone.now)
-    description = models.TextField(max_length=255)
-
-    def __str__(self):
-        return self.applicant_id.email
-
-
 class Referee(models.Model):
     applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
