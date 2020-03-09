@@ -5,7 +5,7 @@ from django.test import TestCase
 
 class TestModels(TestCase):
     def setUp(self):
-        pass
+        x = 3
 
     def test_everything_works(self):
         self.assertEquals(2, 2)

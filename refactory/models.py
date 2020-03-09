@@ -88,7 +88,7 @@ class Administrator(models.Model):
                 self.id = 1
             else:
                 self.id = last_id + 1
-            self.administrator_id = "RFCT/ADM/" + '{:03}'.format(self.id)
+            self.administrator_id = "RFCT/ADM/<number>" + '{:03}'.format(self.id)
             super(Administrator, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -102,7 +102,7 @@ class Staff(models.Model):
     id = models.ForeignKey(
         Administrator, related_name='+', blank=True, on_delete=models.CASCADE, null=True)
     staff_id = models.CharField(
-        max_length=254, default="RFCT/SOAP/ADM/<number>", primary_key=True)
+        max_length=254, default="RFCT/STF/<number>", primary_key=True)
     id = models.IntegerField(default=1)
     staff_Photo = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
@@ -125,7 +125,7 @@ class Staff(models.Model):
 
 class Applicant(models.Model):
     user = models.OneToOneField(RefactoryUser, on_delete=models.CASCADE)
-    applicant_id = models.CharField(max_length=254, primary_key=True)
+    applicant_id = models.CharField(max_length=254, primary_key=True,default="RFCT/APT/<number>")
     id = models.IntegerField(default=1)
     title = models.CharField(max_length=255, blank=True, null=True)
     applicant_Photo = models.CharField(max_length=255, blank=True, null=True)
@@ -146,7 +146,7 @@ class Applicant(models.Model):
                 self.id = 1
             else:
                 self.id = last_id + 1
-            self.applicant_id = "RFCT/SOAP/APT/" + '{:04}'.format(self.id)
+            self.applicant_id = "RFCT/APT/" + '{:04}'.format(self.id)
             super(Applicant, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -418,7 +418,7 @@ class Application(models.Model):
     applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
     catalyst_id = models.ForeignKey(Catalyst, on_delete=models.CASCADE)
     bootcamp_id = models.ForeignKey(Bootcamp, on_delete=models.CASCADE)
-    application_id = models.CharField(primary_key=True, max_length=254)
+    application_id = models.CharField(primary_key=True, max_length=254,default="1")
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     completed = models.BooleanField()
