@@ -257,13 +257,6 @@ class Cohort(models.Model):
         return self.cohort_name
 
 
-class Program(models.Model):
-    program_id = models.CharField(max_length=255, primary_key=True)
-    program_name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.program_name
-
 
 class Catalyst(models.Model):
     catalyst_id = models.CharField(max_length=255, primary_key=True)
@@ -290,7 +283,7 @@ class Bootcamp(models.Model):
     running = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name_name
+        return self.bootcamp_name
 
 
 class Contact(models.Model):
@@ -325,7 +318,6 @@ class EducationBackground(models.Model):
 
     def __str__(self):
         return self.applicant_id.email
-
 
 class SkillSet(models.Model):
     skill_id = models.CharField(max_length=255, primary_key=True)
@@ -396,28 +388,34 @@ class Referee(models.Model):
 
 
 class AdvertisementChannelSet(models.Model):
-    channel_id = models.CharField(max_length=30, primary_key=True)
+    channel_id = models.AutoField(primary_key=True)
     channel_name = models.CharField(max_length=20)
-    position = models.CharField(max_length=255)
     description = models.TextField(max_length=255)
 
     def __str__(self):
         return self.channel_name
 
-
-class AdvertisementChannel(models.Model):
-    applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
-    channel_id = models.ForeignKey(
-        AdvertisementChannelSet, on_delete=models.CASCADE)
+class AdvertisementSubChannelSet(models.Model):
+    sub_channel_id = models.AutoField(primary_key=True)
+    channel_id = models.ForeignKey(AdvertisementChannelSet,on_delete=models.CASCADE)
+    sub_channel_name = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.channel_id.channel_name
+        return self.sub_channel_name
+
+
+class ApplicantChannelSelection(models.Model):
+    applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
+    sub_channel_id = models.ForeignKey(
+        AdvertisementSubChannelSet, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.sub_channel_id.sub_channel_name
+
 
 
 class Application(models.Model):
     applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
-    catalyst_id = models.ForeignKey(Catalyst, on_delete=models.CASCADE)
-    bootcamp_id = models.ForeignKey(Bootcamp, on_delete=models.CASCADE)
     application_id = models.CharField(primary_key=True, max_length=254,default="1")
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
@@ -426,7 +424,25 @@ class Application(models.Model):
     interviewed = models.BooleanField()
     admitted = models.BooleanField()
 
+    def __str__(self):
+        rtn_str = ""
+        if self.applicant_id.user.first_name:
+            rtn_str = rtn_str + " " + self.applicant_id.user.first_name
+        if self.applicant_id.user.last_name:        
+            rtn_str = rtn_str + " " + self.applicant_id.user.last_name
+        rtn_str = rtn_str + " " + self.applicant_id.user.email
+        return rtn_str
 
+class CatalystApplication(models.Model):
+    catalyst_id = models.ForeignKey(Catalyst,on_delete=models.CASCADE)
+    application_id = models.OneToOneField(Application,on_delete=models.CASCADE)
+
+class BootcampApplication(models.Model):
+    bootcamp_id = models.ForeignKey(Bootcamp,on_delete=models.CASCADE)
+    application_id = models.OneToOneField(Application,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.bootcamp_id.bootcamp_name
 class Competence(models.Model):
     application_id = models.ForeignKey(Application, on_delete=models.CASCADE)
     report_link = models.URLField

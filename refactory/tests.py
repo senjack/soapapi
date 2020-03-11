@@ -1,12 +1,12 @@
 from django.test import TestCase
-
-# from .models import RefactoryUserManager
-
+from refactory.models import Administrator
 
 class TestModels(TestCase):
     def setUp(self):
-        pass
+        self.new_admin = Administrator.objects.create(
+            
+        )
 
-    def test_everything_works(self):
-        self.assertEquals(2, 2)
-# Create your tests here.
+    def test_administrator_creation(self):
+        self.assertEquals()
+
