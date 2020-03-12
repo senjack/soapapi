@@ -7,13 +7,12 @@ from .models import Bootcamp
 from .models import Contact
 from .models import EducationBackground
 from .models import SkillSet
-from .models import Honor
 from .models import ApplicationVideo
 from .models import Interview
 from .models import Role
 from .models import AdministratorRole
-from .models import InterviewCategory
+from .models import InterviewCategory, StructureIndicator, CategoryStructure, InterviewSet, InterviewSelection, Room, Batch, Partner, Application, Competence, Admission
 
 refactory_models_list = [InterviewCategory,
-                         RefactoryUser, Administrator, Staff, Applicant, Cohort, Catalyst, Bootcamp, Contact, EducationBackground, SkillSet, Honor, ApplicationVideo, Interview, Role, AdministratorRole]
+                         RefactoryUser, Administrator, Staff, Applicant, Cohort, Catalyst, Bootcamp, Contact, EducationBackground, SkillSet, ApplicationVideo, Interview, Role, AdministratorRole, StructureIndicator, CategoryStructure, InterviewSet, InterviewSelection, Room, Batch, Partner, Application, Competence, Admission]
 admin.site.register(refactory_models_list)
