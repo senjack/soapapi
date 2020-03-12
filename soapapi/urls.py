@@ -20,13 +20,16 @@ from django.urls import path
 from django.conf.urls import url, include
 from refactory.models import RefactoryUser
 from rest_framework import routers, serializers, viewsets
-from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # Serializers define the API representation.
+
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RefactoryUser
-        fields = ['id','url',  'email','first_name','last_name','username','title','gender','primary_Contact','secondary_Contact','is_staff','is_active','date_joined'] #, 'password'
+        fields = ['id', 'url',  'email', 'first_name', 'last_name', 'username', 'title', 'gender',
+                  'primary_Contact', 'secondary_Contact', 'is_staff', 'is_active', 'date_joined']  # , 'password'
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -46,9 +49,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return instance
 
 # ViewSets define the view behavior.
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = RefactoryUser.objects.all()
     serializer_class = UserSerializer
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -56,15 +62,15 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-#    url(r'^api-auth/', include('rest_framework.urls'))
-   
-   # Default
+    #    url(r'^api-auth/', include('rest_framework.urls'))
+
+    # Default
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # jwt
     path(r'api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path(r'api/token/refresh/',TokenRefreshView.as_view(), name='token_refresh'),
+    path(r'api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # login
     path(r'rest-auth/', include('rest_auth.urls')),

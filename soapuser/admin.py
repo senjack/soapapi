@@ -1,3 +1,4 @@
+from .models import Batch
 from django.contrib import admin
 
 from .models import Application
@@ -7,8 +8,7 @@ from .models import Category_structure
 from .models import structure_indicator
 from .models import Interview_set
 from .models import Interview_selection
-from. models import Room
-from .models import Batch
+from .models import Room
 
 # Register your models here.
 admin.site.register(Application)
@@ -19,11 +19,3 @@ admin.site.register(Interview_set)
 admin.site.register(Interview_selection)
 admin.site.register(Room)
 admin.site.register(Batch)
-
-
-
-
-
-
-
-
