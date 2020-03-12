@@ -24,7 +24,7 @@ router5 = routers.DefaultRouter()
 router5.register(r'skill-set', views.SkillSetViewSet)
 
 router6 = routers.DefaultRouter()
-router6.register(r'honor', views.HonorViewSet)
+# router6.register(r'honor', views.HonorViewSet)
 
 router7 = routers.DefaultRouter()
 router7.register(r'application-video', views.ApplicationVideoViewSet)
@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^cohort/', include(router3.urls)),
     url(r'^education-background/', include(router4.urls)),
     url(r'^skill-set/', include(router5.urls)),
-    url(r'^honor/', include(router6.urls)),
+    # url(r'^honor/', include(router6.urls)),
     url(r'^Application-video/', include(router7.urls)),
     url(r'^Interview/', include(router8.urls)),
 ]

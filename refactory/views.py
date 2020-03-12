@@ -18,8 +18,8 @@ from .serializers import EducationBackgroundSerializer
 from .models import EducationBackground
 from .serializers import SkillSetSerializer
 from .models import SkillSet
-from .serializers import HonorSerializer
-from .models import Honor
+# from .serializers import HonorSerializer
+# from .models import Honor
 from .serializers import ApplicationVideoSerializer
 from .models import ApplicationVideo
 from .serializers import InterviewSerializer
@@ -58,9 +58,9 @@ class SkillSetViewSet (viewsets.ModelViewSet):
     serializer_class = SkillSetSerializer
 
 
-class HonorViewSet (viewsets.ModelViewSet):
-    queryset = Honor.objects.all()
-    serializer_class = HonorSerializer
+# class HonorViewSet (viewsets.ModelViewSet):
+#     queryset = Honor.objects.all()
+#     serializer_class = HonorSerializer
 
 
 class ApplicationVideoViewSet (viewsets.ModelViewSet):
