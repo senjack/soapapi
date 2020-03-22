@@ -6,7 +6,6 @@ from .models import Bootcamp
 from .models import Contact
 from .models import EducationBackground
 from .models import SkillSet
-# from .models import Honor
 from .models import ApplicationVideo
 from .models import Interview
 
@@ -50,13 +49,6 @@ class SkillSetSerializer (serializers.HyperlinkedModelSerializer):
     class Meta:
         SkillSet
     fields = ('skill_id', 'skill_name', 'description')
-
-
-# class HonorSerializer (serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         Honor
-#     fields = ('applicant_id', 'honor_title', 'association',
-#               'Issuer', 'date_of_honor', 'Description')
 
 
 class ApplicationVideoSerializer (serializers.HyperlinkedModelSerializer):
