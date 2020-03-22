@@ -351,18 +351,6 @@ class Project(models.Model):
         return self.project_name
 
 
-class Publication(models.Model):
-    applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
-    publication_title = models.CharField(max_length=20)
-    publisher = models.CharField(max_length=255)
-    publication_url = models.URLField()
-    publication_date = models.DateField(default=timezone.now)
-    description = models.TextField(max_length=255)
-
-    def __str__(self):
-        return self.publication_title
-
-
 class Certificate(models.Model):
     applicant_id = models.ForeignKey(Applicant, on_delete=models.CASCADE)
     certificate_title = models.CharField(max_length=20)
