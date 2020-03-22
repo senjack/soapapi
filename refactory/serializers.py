@@ -7,7 +7,8 @@ from .models import Contact
 from .models import EducationBackground
 from .models import SkillSet
 from .models import ApplicationVideo
-from .models import Interview
+from .models import Interview,Project
+
 
 
 class CohortSerializer (serializers.HyperlinkedModelSerializer):
@@ -47,17 +48,22 @@ class EducationBackgroundSerializer (serializers.HyperlinkedModelSerializer):
 
 class SkillSetSerializer (serializers.HyperlinkedModelSerializer):
     class Meta:
-        SkillSet
-    fields = ('skill_id', 'skill_name', 'description')
+        model=SkillSet
+        fields = ('skill_id', 'skill_name', 'description')
 
 
 class ApplicationVideoSerializer (serializers.HyperlinkedModelSerializer):
     class Meta:
-        ApplicationVideo
-    fields = ('application_id', 'videolink')
+        model=ApplicationVideo
+        fields = ('application_id', 'videolink')
 
 
 class InterviewSerializer (serializers.HyperlinkedModelSerializer):
     class Meta:
-        Interview
-    fields = ('schedule_id', 'interview_id', 'start_date', 'end_date')
+        model = Interview
+        fields = ('schedule_id', 'interview_id', 'start_date', 'end_date')
+
+class ProjectSerializer (serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = '__all__'
