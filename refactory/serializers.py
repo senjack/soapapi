@@ -100,7 +100,7 @@ class CatalystApplicationSerializer (serializers.ModelSerializer):
 
 class BootcampApplicationSerializer (serializers.ModelSerializer):
     class Meta:
-        model = Project
+        model = BootcampApplication
         fields = '__all__'
 
 class CompetenceSerializer (serializers.ModelSerializer):
