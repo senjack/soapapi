@@ -77,10 +77,11 @@ urlpatterns = [
     path(r'api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # login
-    path(r'rest-auth/', include('rest_auth.urls')),
+    path(r'auth/', include('rest_auth.urls')),
 
-    path(r'rest-auth/registration/', include('rest_auth.registration.urls')),
+    path(r'auth/registration/', include('rest_auth.registration.urls')),
 
-    url(r'^apis/', include('refactory.urls')),
+    # refactory app
+    path('api/', include('refactory.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
