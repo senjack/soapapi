@@ -7,7 +7,7 @@ __VC__.txt
 refactory/migrations/
 migrations/
 soapuser/
-
+Models_Backup.txt
 #########################################
 *.log
 *.pot
