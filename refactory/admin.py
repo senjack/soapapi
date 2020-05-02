@@ -46,4 +46,5 @@ refactory_models_list = [
     InterviewScore,
     Admission
 ]
+
 admin.site.register(refactory_models_list)
