@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+# custom imported to handle static files
+from django.conf import settings
+from django.conf.urls.static import static
+# END: custom imported to handle static files
 
 from django.conf.urls import url, include
 from refactory.models import RefactoryUser
@@ -79,4 +83,4 @@ urlpatterns = [
 
     url(r'^apis/', include('refactory.urls')),
 
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
